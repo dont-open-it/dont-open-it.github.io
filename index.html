@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style>
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+  body {
+    background: purple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  canvas {
+    border: 1px solid white;
+  }
+  div {
+	width: 300px;
+	border: 5px solid green;
+	padding: 30px;
+	margin: 20px;
+  }
+  #p1
+  {
+    color:red;
+	position:absolute;
+	left:100px;
+	top:10px;
+  }
+  #p2
+  {
+    color:red;
+	position:absolute;
+	left:100px;
+	top:30px;
+  }
+  #p3
+  {
+    color:red;
+	position:absolute;
+	left:300px;
+	top:30px;
+  }
+  #p4
+  {
+    color:yellow;
+	position:absolute;
+	left:100px;
+	top:60px;
+  }
+  #score
+  {
+    color:yellow;
+    position:absolute;
+	left:155px;
+	top:10px;
+  }
+  #high
+  {
+    color:yellow;
+    position:absolute;
+	left:195px;
+	top:30px;
+  }
+  #lvl
+  {
+    color:yellow;
+    position:absolute;
+	left:435px;
+	top:30px;
+  }
+  #log
+  {
+	color:white;
+  }
+  
+  </style>
+</head>
+<body>
+<p id="p1">SCORE: </p>
+<p id="p2">HIGHSCORE: </p>
+<p id="p3">LEVEL CLEARED: </p>
+<p id="p4">Use arrow keys to move. To pause the game, press P. You need to score 500 points to unlock all messages.<br>Play this game at your own risk. Meanwhile, the owner of this game has all the permissions to hack your PC while you're playing it. xP</p>
+<p id="score"></p>
+<p id="high"></p>
+<p id="lvl"></p>
+<canvas width="400" height="400" id="game"></canvas>
+<br><br>
+
+<div id="log"></div>
+<script>
+document.getElementById('score').innerHTML=0;
+document.getElementById('high').innerHTML=0;
+document.getElementById('lvl').innerHTML=0;
+document.getElementById('log').innerHTML = 'MESSAGE BOX:<br>';
+var canvas = document.getElementById('game');
+var context = canvas.getContext('2d');
+var grid = 16;
+var count = 0;
+var score=0;
+var max=0;  
+var msg1 = 'Can I confess something? I don\'t know if it\'s the right time to say it...';
+var msg2 = '<br>Remember I told you I have a secret which I couldn\'t tell you even though you insisted me to tell it?!';
+var msg3 = '<br>Remember I told you I remembered just you from De Paul even about 8 years since I left Kerala, searched your name on fb and sent you a request?!! <br><br>Um. So finally gathering loads of courage to tell you that...';
+var msg4 = 'you just added a gaming skill to your Skills list, Congratulations Hima!! xP';
+var l1 = 50;
+var l2 = 150;
+var l3 = 300;
+var l4 = 500;
+var level = 0;
+
+var snake = {
+  x: 160,
+  y: 160,
+  
+  dx: grid,
+  dy: 0,
+  
+  cells: [],
+  
+  maxCells: 4
+  
+};
+var apple = {
+  x: 320,
+  y: 320,
+  val: 0
+};
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+function loop() {
+  if(apple.val === 1) {
+    apple.val = 0;
+	if(score === l4) {
+		alert('Press ENTER key again after reading the message, and continue playing to beat your previous high-score!!');
+	} else {
+		alert('Press ENTER key again after reading the message!');
+	}    
+  }
+  requestAnimationFrame(loop);
+  if (++count < 4) {
+    return;
+  }
+  count = 0;
+  context.clearRect(0,0,canvas.width,canvas.height);
+
+  snake.x += snake.dx;
+  snake.y += snake.dy;
+  if (snake.x < 0) {
+	snake.x = canvas.width - grid;
+  }
+  else if (snake.x >= canvas.width) {
+	snake.x = 0;
+  }
+  
+  if (snake.y < 0) {
+	snake.y = canvas.height - grid;
+  }
+  else if (snake.y >= canvas.height) {
+	snake.y = 0;
+  }
+
+  snake.cells.unshift({x: snake.x, y: snake.y});
+
+  if (snake.cells.length > snake.maxCells) {
+	snake.cells.pop();
+  }
+
+  context.fillStyle = 'red';
+  context.fillRect(apple.x, apple.y, grid-1, grid-1);
+
+  context.fillStyle = 'green';
+  snake.cells.forEach(function(cell, index) {
+	
+
+	context.fillRect(cell.x, cell.y, grid-1, grid-1);  
+
+	if (cell.x === apple.x && cell.y === apple.y) {
+	  snake.maxCells++;
+	  score+=10;
+
+	  document.getElementById('score').innerHTML=score;
+	  
+
+	  apple.x = getRandomInt(0, 25) * grid;
+	  apple.y = getRandomInt(0, 25) * grid;
+	  
+	  if(score === l1) {
+		apple.val = 1;
+		level = 1;
+	    document.getElementById('log').innerHTML += msg1;
+		alert('You just unlocked level 1, first message can be viewed in the message box!\n\nPress ENTER key to continue!');
+	  }
+	  else if(score === l2) {
+	    apple.val = 1;
+		level = 2;
+	    document.getElementById('log').innerHTML += msg2;
+		alert('Going good! You just unlocked level 2!\n\nPress ENTER key to continue!');
+	  }
+	  else if(score === l3) {
+	    apple.val = 1;
+		level = 3;
+	    document.getElementById('log').innerHTML += msg3;
+		alert('You\'re playing really well!! You just unlocked level 3!\n\nPress ENTER key to continue!');
+	  }
+	  else if(score === l4) {
+	    apple.val = 1;
+		level = 4;
+	    document.getElementById('log').innerHTML += msg4;
+		alert('Congratulations Hima! You unlocked all the levels :P\n\nPress ENTER key to continue!');
+	  }
+	  document.getElementById('lvl').innerHTML=level;
+	  
+	}
+
+	for (var i = index + 1; i < snake.cells.length; i++)
+	{
+	  
+	  if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) 
+	 { 
+	 
+		if(score>max)
+		{
+		 max=score;
+		}
+		snake.x = 160;
+		snake.y = 160;
+		snake.cells = [];
+		snake.maxCells = 4;
+		snake.dx = grid;
+		snake.dy = 0;
+		score=0;
+		apple.x = getRandomInt(0, 25) * grid;
+		apple.y = getRandomInt(0, 25) * grid;
+		document.getElementById('score').innerHTML=0;
+		document.getElementById('high').innerHTML=max;
+		document.getElementById('lvl').innerHTML=0;
+		document.getElementById('log').innerHTML = 'MESSAGE BOX:<br>';
+		alert('GAME OVER!! \n\nHima, you cleared '+level+' levels! If you want to play it again, press ENTER key.');
+		level = 0;
+	  }
+	}
+  }
+  
+  );
+}
+
+document.addEventListener('keydown', function(e) {
+
+  if (e.which === 37 && snake.dx === 0) {
+    snake.dx = -grid;
+    snake.dy = 0;
+  }
+  else if (e.which === 38 && snake.dy === 0) {
+    snake.dy = -grid;
+    snake.dx = 0;
+  }
+  else if (e.which === 39 && snake.dx === 0) {
+    snake.dx = grid;
+    snake.dy = 0;
+  }
+  else if (e.which === 40 && snake.dy === 0) {
+    snake.dy = grid;
+    snake.dx = 0;
+  }
+  else if(e.which === 80) {
+	alert('Game has been paused, press ENTER key to play');
+  }
+});
+
+alert('Hi Hima, I hope you\'re doing well! You\'ve to unlock 4 levels.\n\nClick OK or press ENTER key to start playing!\n\n(The game will start even if you press ESC key xD)');
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
