@@ -17,7 +17,7 @@
     border: 1px solid white;
   }
   div {
-	width: 300px;
+	width: 600px;
 	border: 5px solid green;
 	padding: 30px;
 	margin: 20px;
@@ -77,8 +77,14 @@
   }
   
   </style>
+  <script>
+		function playSound () {
+			document.getElementById('play').play();
+		}
+  </script>
 </head>
 <body>
+<audio id="play" src="http://www.soundjay.com/button/beep-07.wav"></audio>
 <p id="p1">SCORE: </p>
 <p id="p2">HIGHSCORE: </p>
 <p id="p3">LEVEL CLEARED: </p>
@@ -103,8 +109,8 @@ var score=0;
 var max=0;  
 var msg1 = 'Can I confess something? I don\'t know if it\'s the right time to say it...';
 var msg2 = '<br>Remember I told you I have a secret which I couldn\'t tell you even though you insisted me to tell it?!';
-var msg3 = '<br>Remember I told you I remembered just you from De Paul even about 8 years since I left Kerala, searched your name on fb and sent you a request?!! <br><br>Um. So finally gathering loads of courage to tell you that...';
-var msg4 = 'you just added a gaming skill to your Skills list, Congratulations Hima!! xP';
+var msg3 = '<br>Remember I told you I remembered just you from De Paul even about 8 years since I left Kerala, searched your name on fb and sent you a request?!!';
+var msg4 = '<br><br>I\'m really nervous to tell you about it. There\'s something I\'ve always wanted to tell you since a very long time. Neither could I tell you in grade 4, nor since we started talking since 2015, that I had a crush on you. When I was about to leave Kalpetta, even my sister and my parents got some knowledge about it, and about how much I\'d be missing De Paul, so they actually dropped me to the school once for the last time, to give my contact details to known ones. It was initial days of grade 5 session then, when I came to school to meet my friends for the last time, and I remember it was break time and near the school church, I gave cards having my contact details hoping to be contacted by them. Some actually did, but I couldn\'t give my updated details to them after I left Himachal Pradesh after finishing my grade 5 there. I never thought I\'d get a chance to meet them, and you, and could say it about the chances not taken then to confess it.';
 var l1 = 50;
 var l2 = 150;
 var l3 = 300;
@@ -193,25 +199,29 @@ function loop() {
 		apple.val = 1;
 		level = 1;
 	    document.getElementById('log').innerHTML += msg1;
+		playSound();
 		alert('You just unlocked level 1, first message can be viewed in the message box!\n\nPress ENTER key to continue!');
 	  }
 	  else if(score === l2) {
 	    apple.val = 1;
 		level = 2;
 	    document.getElementById('log').innerHTML += msg2;
+		playSound();
 		alert('Going good! You just unlocked level 2!\n\nPress ENTER key to continue!');
 	  }
 	  else if(score === l3) {
 	    apple.val = 1;
 		level = 3;
 	    document.getElementById('log').innerHTML += msg3;
+		playSound();
 		alert('You\'re playing really well!! You just unlocked level 3!\n\nPress ENTER key to continue!');
 	  }
 	  else if(score === l4) {
 	    apple.val = 1;
 		level = 4;
 	    document.getElementById('log').innerHTML += msg4;
-		alert('Congratulations Hima! You unlocked all the levels :P\n\nPress ENTER key to continue!');
+		playSound();
+		alert('Congratulations Hima! You just added a new gaming skill to your Skills list :P\n\nPress ENTER key to continue!');
 	  }
 	  document.getElementById('lvl').innerHTML=level;
 	  
@@ -272,7 +282,7 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-alert('Hi Hima, I hope you\'re doing well! You\'ve to unlock 4 levels.\n\nClick OK or press ENTER key to start playing!\n\n(The game will start even if you press ESC key xD)');
+alert('Hi Hima, I hope you\'re doing well! You\'ve to unlock 4 levels.\n\nClick on OK or press ENTER key to start playing!\n\n(The game will start even if you press ESC key xD)');
 requestAnimationFrame(loop);
 </script>
 </body>
